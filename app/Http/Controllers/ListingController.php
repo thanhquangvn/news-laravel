@@ -58,6 +58,7 @@ class ListingController extends Controller
 
     // Update Listing Data
     public function update(Request $request, Listing $listing) {
+        $this->authorize('update', $listing);
         // Make sure logged in user is owner
         if($listing->user_id != auth()->id()) {
             abort(403, 'Unauthorized Action');
@@ -85,6 +86,7 @@ class ListingController extends Controller
     // Delete Listing
     public function destroy(Listing $listing)
     {
+        $this->authorize('delete', $listing);
     // Make sure logged in user is the owner
         if ($listing->user_id != auth()->id()) {
             abort(403, 'Unauthorized Action');
