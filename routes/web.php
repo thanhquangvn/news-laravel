@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Listing;
@@ -24,7 +25,7 @@ use App\Models\Listing;
 // store - Store new listing
 // edit - Show form to edit listing
 // update - Update listing
-// destroy - Delete listing  
+// destroy - Delete listing
 
 // All Listings
 Route::get('/', [ListingController::class, 'index']);
@@ -64,3 +65,7 @@ Route::get('/login', [UserController::class, 'login'])->name('login')->middlewar
 
 // Log In User
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
+
+Route::get('/admin/users', [AdminController::class, 'index'])->middleware('admin');
+
+Route::get('/admin/users/{user}', [AdminController::class, 'show'])->name('admin.users.show')->middleware('auth');
