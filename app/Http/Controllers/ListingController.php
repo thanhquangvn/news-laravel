@@ -6,6 +6,8 @@ use App\Models\Listing;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use App\Events\ListingCreatedOrUpdated;
+use Illuminate\Support\Facades\File;
 
 class ListingController extends Controller
 {
@@ -48,6 +50,9 @@ class ListingController extends Controller
 
         Listing::create($formFields);
 
+        // After the listing is created, trigger the event
+        event(new ListingCreatedOrUpdated($listing));
+
         return redirect('/')->with('message', 'Listing created successfully!');
     }
 
@@ -80,6 +85,8 @@ class ListingController extends Controller
 
         $listing->update($formFields);
 
+        event(new ListingCreatedOrUpdated($listing));
+
         return redirect('/listings/manage')->with('message', 'Listing updated successfully!');
     }
 
@@ -102,5 +109,29 @@ class ListingController extends Controller
     // Manage Listings
     public function manage() {
         return view('listings.manage', ['listings' => auth()->user()->listings()->get()]);
+    }
+
+    public function viewPdf(Listing $listing)
+    {
+        $filePath = public_path("/reports/listing_{$listing->id}.pdf");
+        if (!File::exists($filePath)) {
+            abort(404);
+        }
+
+        $headers = [
+            'Content-Type' => 'application/pdf',
+        ];
+
+        return response()->file($filePath, $headers);
+    }
+
+    public function downloadPdf(Listing $listing)
+    {
+        $filePath = public_path("/reports/listing_{$listing->id}.pdf");
+        if (!File::exists($filePath)) {
+            abort(404);
+        }
+
+        return response()->download($filePath, "listing_{$listing->id}.pdf");
     }
 }
