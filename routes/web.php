@@ -69,3 +69,6 @@ Route::post('/users/authenticate', [UserController::class, 'authenticate']);
 Route::get('/admin/users', [AdminController::class, 'index'])->middleware('admin');
 
 Route::get('/admin/users/{user}', [AdminController::class, 'show'])->name('admin.users.show')->middleware('auth');
+
+Route::get('/listings/{listing}/view-pdf', [ListingController::class, 'viewPdf'])->name('listings.viewPdf');
+Route::get('/listings/{listing}/download-pdf', [ListingController::class, 'downloadPdf'])->name('listings.downloadPdf');

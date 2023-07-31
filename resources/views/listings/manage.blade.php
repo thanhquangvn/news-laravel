@@ -34,6 +34,12 @@
                 @method('DELETE')
                 <button type="submit" class="text-red-500"><i class="fa-solid fa-trash"></i> Delete</button>
               </form>
+              <a href="/listings/{{$listing->id}}/viewPdf" class="text-blue-400 px-6 py-2 rounded-xl"><i
+                class="fa-solid fa-pen-to-square"></i>
+                View PDF</a>
+              <a ref="/listings/{{$listing->id}}/downloadPdf" class="text-blue-400 px-6 py-2 rounded-xl"><i
+                class="fa-solid fa-pen-to-square"></i>
+                Download PDF</a>
             </td>
           </tr>
           @endforeach
